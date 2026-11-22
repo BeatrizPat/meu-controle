@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="Controle financeiro pessoal, simples e privado.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>Meu Controle</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark">M</div><div><div class="brand-name">meu controle</div><div class="brand-sub">suas finanças, no seu ritmo</div></div></div>
+      <button class="icon-btn" id="backupBtn" aria-label="Backup" title="Backup">⇧</button>
+    </header>
+
+    <main>
+      <section class="month-row">
+        <button class="month-arrow" id="prevMonth" aria-label="Mês anterior">‹</button>
+        <div><div class="eyebrow">VISÃO GERAL</div><h1 id="monthTitle">Este mês</h1></div>
+        <button class="month-arrow" id="nextMonth" aria-label="Próximo mês">›</button>
+      </section>
+
+      <section class="hero-card">
+        <div class="hero-label">Total comprometido no mês</div>
+        <div class="hero-total" id="monthTotal">R$ 0,00</div>
+        <div class="hero-foot"><span id="expenseCount">0 despesas</span><span class="hero-dot">•</span><span id="monthComparison">Visão mensal</span></div>
+        <div class="hero-glow"></div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card"><div class="stat-icon green">↘</div><div class="stat-label">À vista no mês</div><div class="stat-value" id="cashTotal">R$ 0,00</div></article>
+        <article class="stat-card"><div class="stat-icon purple">▤</div><div class="stat-label">Parcelas no mês</div><div class="stat-value" id="installmentTotal">R$ 0,00</div></article>
+      </section>
+
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">ACOMPANHAMENTO</div><h2>Orçamento por categoria</h2></div><button class="text-btn" id="manageBudgets">Editar</button></div>
+        <div id="budgetList" class="budget-list"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">SEU DINHEIRO</div><h2>Gastos por categoria</h2></div></div>
+        <div id="categoryList" class="category-list"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">PRÓXIMOS MESES</div><h2>Projeção de parcelas</h2></div><span class="muted tiny">6 meses</span></div>
+        <div id="forecastList" class="forecast-list"></div>
+      </section>
+
+      <section class="section transactions-section">
+        <div class="section-heading"><div><div class="eyebrow">MOVIMENTAÇÕES</div><h2>Despesas do mês</h2></div><span id="transactionCount" class="muted tiny"></span></div>
+        <div id="expenseList" class="expense-list"></div>
+      </section>
+    </main>
+
+    <button class="fab" id="addExpenseBtn"><span>＋</span> Novo gasto</button>
+    <nav class="bottom-nav"><div class="nav-item active"><span>⌂</span><small>Início</small></div><button class="nav-item" id="historyBtn"><span>◷</span><small>Histórico</small></button><button class="nav-item" id="settingsBtn"><span>⚙</span><small>Ajustes</small></button></nav>
+  </div>
+
+  <dialog id="expenseDialog" class="sheet">
+    <form id="expenseForm">
+      <div class="sheet-head"><div><div class="eyebrow">LANÇAMENTO</div><h2 id="expenseDialogTitle">Novo gasto</h2></div><button type="button" class="close-btn" data-close="expenseDialog">×</button></div>
+      <input type="hidden" id="expenseId">
+      <label>Descrição<input id="description" maxlength="70" placeholder="Ex.: Mercado, almoço..." required></label>
+      <div class="form-grid">
+        <label>Valor total (R$)<input id="amount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="0,00" required></label>
+        <label>Data<input id="date" type="date" required></label>
+      </div>
+      <label>Forma de pagamento<select id="payment"><option value="credit">Cartão de crédito</option><option value="debit">Cartão de débito</option><option value="pix">PIX</option><option value="cash">Dinheiro</option><option value="transfer">Transferência</option></select></label>
+      <label>Categoria<select id="category"></select></label>
+      <div id="installmentFields" class="installment-box">
+        <label>Número de parcelas<select id="installments"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>18</option><option>24</option></select></label>
+        <p class="helper" id="installmentHint">A primeira parcela será considerada no mês da compra.</p>
+      </div>
+      <label>Observações <span class="optional">(opcional)</span><textarea id="notes" rows="2" maxlength="180" placeholder="Detalhes que queira guardar"></textarea></label>
+      <button class="primary-btn full" type="submit">Salvar gasto</button>
+    </form>
+  </dialog>
+
+  <dialog id="budgetDialog" class="sheet">
+    <form id="budgetForm">
+      <div class="sheet-head"><div><div class="eyebrow">PLANEJAMENTO</div><h2>Orçamentos mensais</h2></div><button type="button" class="close-btn" data-close="budgetDialog">×</button></div>
+      <p class="helper">Defina quanto pretende gastar em cada categoria. Deixe em branco para não estabelecer limite.</p>
+      <div id="budgetInputs" class="budget-inputs"></div>
+      <button class="primary-btn full" type="submit">Salvar orçamentos</button>
+    </form>
+  </dialog>
+
+  <dialog id="backupDialog" class="sheet">
+    <div class="sheet-head"><div><div class="eyebrow">SEUS DADOS</div><h2>Backup e restauração</h2></div><button class="close-btn" data-close="backupDialog">×</button></div>
+    <p class="helper">Seus dados ficam somente neste aparelho. Exporte um arquivo de backup periodicamente e guarde-o em um local seguro.</p>
+    <button class="primary-btn full" id="exportBtn">⇩ Exportar backup</button>
+    <label class="file-label">Restaurar backup<input type="file" id="importFile" accept="application/json,.json"></label>
+    <p class="helper warning-text">A restauração substitui os dados atuais pelos dados do arquivo selecionado.</p>
+  </dialog>
+
+  <dialog id="historyDialog" class="sheet">
+    <div class="sheet-head"><div><div class="eyebrow">CONSULTA</div><h2>Histórico mensal</h2></div><button class="close-btn" data-close="historyDialog">×</button></div>
+    <div id="historyList" class="history-list"></div>
+  </dialog>
+
+  <dialog id="settingsDialog" class="sheet">
+    <div class="sheet-head"><div><div class="eyebrow">APLICATIVO</div><h2>Ajustes</h2></div><button class="close-btn" data-close="settingsDialog">×</button></div>
+    <div class="settings-card"><span>Armazenamento</span><strong>Local neste aparelho</strong></div>
+    <div class="settings-card"><span>Conexão</span><strong>Funciona offline após carregar</strong></div>
+    <div class="settings-card"><span>Versão</span><strong>1.0.0 · Meu Controle</strong></div>
+    <button class="danger-btn full" id="clearDataBtn">Apagar todos os dados</button>
+    <p class="helper">Atenção: essa ação não pode ser desfeita. Faça um backup antes.</p>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
