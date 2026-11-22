@@ -37,6 +37,22 @@
       </section>
 
       <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">EVOLUÇÃO</div><h2>Comparativo mensal</h2></div></div>
+        <div class="comparison-card" id="comparisonCard"></div>
+        <div class="chart-card"><div class="chart-title">Gastos nos últimos 6 meses</div><div id="monthlyChart" class="monthly-chart"></div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">SEUS CARTÕES</div><h2>Cartões de crédito</h2></div><button class="text-btn" id="manageCards">Gerenciar</button></div>
+        <div id="cardList" class="card-list"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading"><div><div class="eyebrow">CICLO DE COBRANÇA</div><h2>Faturas do mês</h2></div></div>
+        <div id="statementList" class="statement-list"></div>
+      </section>
+
+      <section class="section">
         <div class="section-heading"><div><div class="eyebrow">ACOMPANHAMENTO</div><h2>Orçamento por categoria</h2></div><button class="text-btn" id="manageBudgets">Editar</button></div>
         <div id="budgetList" class="budget-list"></div>
       </section>
@@ -73,6 +89,7 @@
       <label>Forma de pagamento<select id="payment"><option value="credit">Cartão de crédito</option><option value="debit">Cartão de débito</option><option value="pix">PIX</option><option value="cash">Dinheiro</option><option value="transfer">Transferência</option></select></label>
       <label>Categoria<select id="category"></select></label>
       <div id="installmentFields" class="installment-box">
+        <label>Cartão utilizado<select id="cardSelect"></select></label>
         <label>Número de parcelas<select id="installments"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>18</option><option>24</option></select></label>
         <p class="helper" id="installmentHint">A primeira parcela será considerada no mês da compra.</p>
       </div>
@@ -96,6 +113,31 @@
     <button class="primary-btn full" id="exportBtn">⇩ Exportar backup</button>
     <label class="file-label">Restaurar backup<input type="file" id="importFile" accept="application/json,.json"></label>
     <p class="helper warning-text">A restauração substitui os dados atuais pelos dados do arquivo selecionado.</p>
+  </dialog>
+
+  <dialog id="cardsDialog" class="sheet">
+    <div class="sheet-head"><div><div class="eyebrow">MEIOS DE PAGAMENTO</div><h2>Meus cartões</h2></div><button class="close-btn" data-close="cardsDialog">×</button></div>
+    <form id="cardForm" class="card-form">
+      <input type="hidden" id="cardId">
+      <label>Nome do cartão<input id="cardName" maxlength="35" placeholder="Ex.: Nubank" required></label>
+      <div class="form-grid">
+        <label>Limite (R$)<input id="cardLimit" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00" required></label>
+        <label>Cor<select id="cardColor"><option value="#9b82f6">Roxo</option><option value="#5aa9e6">Azul</option><option value="#55c69a">Verde</option><option value="#e6a65a">Laranja</option><option value="#e879a5">Rosa</option></select></label>
+      </div>
+      <div class="form-grid">
+        <label>Dia de fechamento<input id="cardClosing" type="number" min="1" max="28" value="10" required></label>
+        <label>Dia de vencimento<input id="cardDue" type="number" min="1" max="28" value="17" required></label>
+      </div>
+      <button class="primary-btn full" type="submit">Salvar cartão</button>
+    </form>
+    <div class="divider-line"></div>
+    <div id="managedCardList" class="managed-card-list"></div>
+    <p class="helper">Use dias de 1 a 28 para evitar ambiguidades em meses mais curtos. Compras após o fechamento entram na próxima fatura.</p>
+  </dialog>
+
+  <dialog id="statementDialog" class="sheet">
+    <div class="sheet-head"><div><div class="eyebrow">DETALHAMENTO</div><h2 id="statementTitle">Fatura</h2></div><button class="close-btn" data-close="statementDialog">×</button></div>
+    <div id="statementDetail"></div>
   </dialog>
 
   <dialog id="historyDialog" class="sheet">
