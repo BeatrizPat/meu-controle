@@ -1,5 +1,5 @@
 
-const CACHE = "meu-controle-v3";
+const CACHE = "meu-controle-v4";
 
 const FILES = [
   "./",

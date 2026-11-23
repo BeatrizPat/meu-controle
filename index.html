@@ -69,7 +69,7 @@
       </section>
 
       <section class="section">
-        <div class="section-heading"><div><div class="eyebrow">PRÓXIMOS MESES</div><h2>Projeção de parcelas</h2></div><span class="muted tiny">6 meses</span></div>
+        <div class="section-heading"><div><div class="eyebrow">PRÓXIMOS MESES</div><h2>Previsão de gastos</h2></div><span class="muted tiny">6 meses</span></div>
         <div id="forecastList" class="forecast-list"></div>
       </section>
 
@@ -96,8 +96,13 @@
       <label>Categoria<select id="category"></select></label>
       <div id="installmentFields" class="installment-box">
         <label>Cartão utilizado<select id="cardSelect"></select></label>
-        <label>Número de parcelas<select id="installments"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>18</option><option>24</option></select></label>
+        <label id="installmentCountField">Número de parcelas<select id="installments"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>18</option><option>24</option></select></label>
         <p class="helper" id="installmentHint">A primeira parcela será considerada no mês da compra.</p>
+      </div>
+      <label class="check-row"><input type="checkbox" id="repeatMonthly"> Repetir mensalmente (gasto recorrente)</label>
+      <div id="recurrenceFields" class="installment-box" style="display:none">
+        <label>Repetir até <span class="optional">(opcional)</span><input id="endDate" type="date"></label>
+        <p class="helper">Deixe em branco para manter a recorrência ativa até você excluí-la. Cada mês será lançado automaticamente na visão mensal e na projeção.</p>
       </div>
       <label>Observações <span class="optional">(opcional)</span><textarea id="notes" rows="2" maxlength="180" placeholder="Detalhes que queira guardar"></textarea></label>
       <button class="primary-btn full" type="submit">Salvar gasto</button>
@@ -155,7 +160,7 @@
     <div class="sheet-head"><div><div class="eyebrow">APLICATIVO</div><h2>Ajustes</h2></div><button class="close-btn" data-close="settingsDialog">×</button></div>
     <div class="settings-card"><span>Armazenamento</span><strong>Local neste aparelho</strong></div>
     <div class="settings-card"><span>Conexão</span><strong>Funciona offline após carregar</strong></div>
-    <div class="settings-card"><span>Versão</span><strong>1.0.0 · Meu Controle</strong></div>
+    <div class="settings-card"><span>Versão</span><strong>4.0.0 · Meu Controle</strong></div>
     <button class="danger-btn full" id="clearDataBtn">Apagar todos os dados</button>
     <p class="helper">Atenção: essa ação não pode ser desfeita. Faça um backup antes.</p>
   </dialog>
